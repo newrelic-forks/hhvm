@@ -170,8 +170,12 @@ frame_free_locals_inl_no_hook(ActRec* fp, int numLocals) {
   }
 }
 
+#define DO_PRERETURN
 void ALWAYS_INLINE
 frame_free_locals_inl(ActRec* fp, int numLocals, TypedValue* rv) {
+#if defined(DO_PRERETURN)
+  EventHook::FunctionPreReturn(fp, *rv);
+#endif
   frame_free_locals_inl_no_hook<false>(fp, numLocals);
   EventHook::FunctionReturn(fp, *rv);
 }
@@ -181,6 +185,9 @@ frame_free_inl(ActRec* fp, TypedValue* rv) { // For frames with no locals
   assert(0 == fp->m_func->numLocals());
   assert(fp->m_varEnv == nullptr);
   assert(fp->hasThis());
+#if defined(DO_PRERETURN)
+  EventHook::FunctionPreReturn(fp, *rv);
+#endif
   decRefObj(fp->getThis());
   EventHook::FunctionReturn(fp, *rv);
 }
@@ -193,6 +200,9 @@ frame_free_locals_unwind(ActRec* fp, int numLocals, const Fault& fault) {
 
 void ALWAYS_INLINE
 frame_free_locals_no_this_inl(ActRec* fp, int numLocals, TypedValue* rv) {
+#if defined(DO_PRERETURN)
+  EventHook::FunctionPreReturn(fp, *rv);
+#endif
   frame_free_locals_helper_inl<false>(fp, numLocals);
   EventHook::FunctionReturn(fp, *rv);
 }

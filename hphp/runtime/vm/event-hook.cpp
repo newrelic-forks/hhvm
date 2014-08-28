@@ -48,6 +48,9 @@ const StaticString
 // implemented in runtime/ext/ext_hotprofiler.cpp
 extern void begin_profiler_frame(Profiler *p,
                                  const char *symbol);
+extern void pre_end_profiler_frame(Profiler *p,
+                                   const TypedValue *retval,
+                                   const char *symbol);
 extern void end_profiler_frame(Profiler *p,
                                const TypedValue *retval,
                                const char *symbol);
@@ -306,6 +309,25 @@ void EventHook::onFunctionEnter(const ActRec* ar, int funcType, ssize_t flags) {
   }
 }
 
+void EventHook::onFunctionPreExit(const ActRec* ar,
+                                  const TypedValue* retval,
+                                  const Fault* fault,
+                                  ssize_t flags) {
+  if ((flags & RequestInjectionData::EventHookFlag) &&
+      (jit::TCA)ar->m_savedRip != jit::mcg->tx().uniqueStubs.retInlHelper) {
+    Profiler* profiler = ThreadInfo::s_threadInfo->m_profiler;
+    if (profiler != nullptr) {
+      // NB: we don't have a function type flag to match what we got in
+      // onFunctionEnter. That's okay, though... we tolerate this in
+      // TraceProfiler.
+      pre_end_profiler_frame(profiler,
+                             retval,
+                             GetFunctionNameForProfiler(ar->func(),
+                                                        NormalFunc));
+    }
+  }
+}
+
 void EventHook::onFunctionExit(const ActRec* ar, const TypedValue* retval,
                                const Fault* fault, ssize_t flags) {
   // Xenon
@@ -468,6 +490,13 @@ void EventHook::onFunctionSuspendE(ActRec* suspending,
     decRefObj(resumableObj);
     throw;
   }
+}
+
+void EventHook::onFunctionPreReturn(ActRec *ar, TypedValue &retval) {
+  ssize_t flags;
+  // flags = CheckSurprise();  // This has side effects in that it clears flags
+  flags = RequestInjectionData::EventHookFlag;
+  onFunctionPreExit(ar, &retval, nullptr, flags);
 }
 
 void EventHook::onFunctionReturn(ActRec* ar, TypedValue retval) {
