@@ -164,7 +164,13 @@ struct RequestInjectionData {
     m_debuggerFlowDepth = depth;
   }
 
+  void checkConditions() const {
+    assert(((long)m_activeLineBreaks.size()) >= 0); // rrh
+    assert(m_activeLineBreaks.size() < 1024); // rrh
+  }
+
   int getActiveLineBreak() const {
+    checkConditions();  // rrh
     return m_activeLineBreaks.size() == 0 ? -1 : m_activeLineBreaks.top();
   }
   void setActiveLineBreak(int line) {
@@ -180,7 +186,9 @@ struct RequestInjectionData {
     }
   }
   void pushActiveLineBreak(int line) {
+    checkConditions(); // rrh
     m_activeLineBreaks.push(line);
+    checkConditions(); // rrh
     updateJit();
   }
 

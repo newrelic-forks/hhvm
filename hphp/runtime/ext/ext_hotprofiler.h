@@ -81,6 +81,9 @@ public:
 
   virtual ~Frame() {
   }
+  ObjectData     *m_this;          // saved this pointer (newrelic)
+  void           *m_wrapped_state; // state carried from enter to exit (newrelic)
+  void           *m_wrapped_state_other; // state carried from other enter to other exit (newrelic)
 
   /**
    * Returns formatted function name
@@ -149,6 +152,11 @@ public:
   /**
    * Called right after a function is finished.
    */
+  virtual void preendFrameEx(const TypedValue *retval, const char *symbol);
+
+  /**
+   * Called right after a function is finished.
+   */
   virtual void endFrameEx(const TypedValue *retval, const char *symbol);
 
   /**
@@ -164,6 +172,11 @@ public:
   /**
    * End top of the stack.
    */
+
+  virtual void preendFrame(const TypedValue *retval,
+                           const char *symbol,
+                           bool endMain = false) __attribute__ ((__noinline__)) ;
+
   virtual void endFrame(const TypedValue *retval,
                         const char *symbol,
                         bool endMain = false) __attribute__ ((__noinline__)) ;
@@ -240,6 +253,8 @@ public:
     p->m_parent = m_stack;
     p->m_name = symbol;
     p->m_hash_code = hprof_inline_hash(symbol);
+    p->m_wrapped_state = 0; /* New Relic */
+    p->m_wrapped_state_other = 0; /* New Relic */
     m_stack = p;
     return p;
   }

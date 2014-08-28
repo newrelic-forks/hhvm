@@ -90,7 +90,11 @@ class EventHook {
       onFunctionSuspendR(suspending, child);
     }
   }
-  static inline void FunctionReturn(ActRec* ar, TypedValue retval) {
+  static inline void FunctionPreReturn(ActRec* ar, TypedValue& retval) {
+    // ringbufferExit(ar);
+    if (UNLIKELY(checkConditionFlags())) { onFunctionPreReturn(ar, retval); }
+  }
+  static inline void FunctionReturn(ActRec* ar, TypedValue& retval) {
     ringbufferExit(ar);
     if (UNLIKELY(checkSurpriseFlags())) { onFunctionReturn(ar, retval); }
   }
@@ -110,6 +114,11 @@ class EventHook {
   static void onFunctionSuspendE(ActRec*, const ActRec*);
   static void onFunctionSuspendR(ActRec*, ObjectData*);
   static void onFunctionReturn(ActRec* ar, TypedValue retval);
+  static void onFunctionReturnJit(ActRec* ar, TypedValue retval) {
+    /* WATCHOUT: this should only be called if onHotProfilerFunctionReturnJit is not called */
+    onFunctionPreReturn(ar, retval);  /* exclusive with onFunctionReturn */
+    onFunctionReturn(ar, retval);
+  }
 
   /**
    * Event hooks -- entry from code called by JIT
