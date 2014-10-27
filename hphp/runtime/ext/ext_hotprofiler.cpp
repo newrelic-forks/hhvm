@@ -513,7 +513,13 @@ class HierarchicalProfiler : public Profiler {
 private:
   class CountMap {
   public:
-    CountMap() : count(0), wall_time(0), cpu(0), memory(0), peak_memory(0) {}
+    CountMap()
+      : count(0)
+      , wall_time(0)
+      , cpu(0)
+      , memory(0)
+      , peak_memory(0)
+    {}
 
     int64_t count;
     int64_t wall_time;
