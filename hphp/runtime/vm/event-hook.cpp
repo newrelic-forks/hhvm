@@ -313,8 +313,20 @@ void EventHook::onFunctionPreExit(const ActRec* ar,
                                   const TypedValue* retval,
                                   const Fault* fault,
                                   ssize_t flags) {
-  if ((flags & RequestInjectionData::EventHookFlag) &&
-      (jit::TCA)ar->m_savedRip != jit::mcg->tx().uniqueStubs.retInlHelper) {
+  //
+  // TODO: this comment stolen from EventHook::onFunctionExit
+  // Do we even need to do this?
+  // When we are not running the JIT, this condition is always taken
+  //
+  // Inlined calls normally skip the function enter and exit events. If we
+  // side exit in an inlined callee, we short-circuit here in order to skip
+  // exit events that could unbalance the call stack.
+  //
+  if (RuntimeOption::EvalJit && ((jit::TCA) ar->m_savedRip == jit::mcg->tx().uniqueStubs.retInlHelper)) {
+    return;
+  }
+
+  if (flags & RequestInjectionData::EventHookFlag) {
     Profiler* profiler = ThreadInfo::s_threadInfo->m_profiler;
     if (profiler != nullptr) {
       // NB: we don't have a function type flag to match what we got in
