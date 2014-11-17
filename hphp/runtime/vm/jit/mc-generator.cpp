@@ -1867,7 +1867,6 @@ MCGenerator::MCGenerator()
 }
 
 void MCGenerator::initUniqueStubs() {
-if (!RuntimeOption::EvalJit) { return; }
   // Put the following stubs into ahot, rather than a.
   CodeCache::Selector cbSel(CodeCache::Selector::Args(code).
                             hot(m_tx.useAHot()));
