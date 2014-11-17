@@ -224,7 +224,21 @@ Class* arGetContextClassImpl<true>(const ActRec* ar) {
 }
 
 void frame_free_locals_no_hook(ActRec* fp) {
-  frame_free_locals_inl_no_hook<false>(fp, fp->func()->numLocals());
+  static int old_semantics = 0;
+  if (old_semantics) {
+    //
+    // rrh was here; see email from mwilliams to rrh on 17Nov2014
+    //
+    frame_free_locals_inl_no_hook<false>(fp, fp->func()->numLocals());
+  } else {
+    //
+    // Free the locals and make sure the return hooks get called.
+    // This is needed to keep the PHP stack and the Profiler stack of Frames
+    // in sync.  The ice is thin here; see the mail from mwilliams.
+    //
+    TypedValue *rv = &fp->m_r;
+    frame_free_locals_inl(fp, fp->func()->numLocals(), rv);
+  }
 }
 
 const StaticString s_call_user_func("call_user_func");
