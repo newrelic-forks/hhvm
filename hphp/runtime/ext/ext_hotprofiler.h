@@ -81,9 +81,10 @@ public:
 
   virtual ~Frame() {
   }
-  ObjectData     *m_this;          // saved this pointer (newrelic)
-  void           *m_wrapped_state; // state carried from enter to exit (newrelic)
-  void           *m_wrapped_state_other; // state carried from other enter to other exit (newrelic)
+
+  ObjectData     *m_this;          // saved this pointer (New Relic)
+  void           *m_wrapped_state; // state held from enter to exit (New Relic)
+  void           *m_wrapped_state_other; // other held state (New Relic)
 
   /**
    * Returns formatted function name
@@ -253,8 +254,9 @@ public:
     p->m_parent = m_stack;
     p->m_name = symbol;
     p->m_hash_code = hprof_inline_hash(symbol);
-    p->m_wrapped_state = 0; /* New Relic */
-    p->m_wrapped_state_other = 0; /* New Relic */
+    p->m_this = NULL; /* New Relic */
+    p->m_wrapped_state = NULL; /* New Relic */
+    p->m_wrapped_state_other = NULL; /* New Relic */
     m_stack = p;
     return p;
   }
