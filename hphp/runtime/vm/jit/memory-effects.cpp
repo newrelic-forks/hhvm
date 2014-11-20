@@ -343,7 +343,7 @@ MemEffects memory_effects_impl(const IRInstruction& inst) {
                        may_load_store_kill(AUnknown, AHeapAny, AMIStateAny));
 
   case HotProfilerFunctionReturnHook:  // rrh was here
-    return ReadAllLocals {};  // major guess // rrh was here
+    return MayLoadStore { AUnknown, ANonFrame };  // rrh was here: major guess
 
   /*
    * If we're returning from a function, it's ReturnEffects.  The RetCtrl
