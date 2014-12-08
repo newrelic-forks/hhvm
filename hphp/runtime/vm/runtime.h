@@ -170,7 +170,7 @@ frame_free_locals_inl_no_hook(ActRec* fp, int numLocals) {
   }
 }
 
-#define DO_PRERETURN
+#undef DO_PRERETURN  // TODO(rrh) 24Nov2014 experiment with no prereturn
 void ALWAYS_INLINE
 frame_free_locals_inl(ActRec* fp, int numLocals, TypedValue* rv) {
 #if defined(DO_PRERETURN)

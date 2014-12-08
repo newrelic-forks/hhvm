@@ -112,7 +112,9 @@ class EventHook {
   static void onFunctionReturn(ActRec* ar, TypedValue retval);
   static void onFunctionReturnJit(ActRec* ar, TypedValue retval) {
     /* WATCHOUT: this should only be called if onHotProfilerFunctionReturnJit is not called */
+#if 0 // TODO(rrh): 24Nov2014 experiments with refcounting
     onFunctionPreReturn(ar, retval);  /* exclusive with onFunctionReturn */
+#endif
     onFunctionReturn(ar, retval);
   }
 
