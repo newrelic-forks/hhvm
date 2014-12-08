@@ -261,7 +261,7 @@ public:
   template<class T>
   static void Bind(const Extension* extension, const Mode mode,
                    const std::string& name, const char *defaultValue,
-                   SetAndGet<T> callbacks, T* p = nullptr) {
+                   SetAndGet<T> callbacks, T* p = nullptr, int rrh_special=0) {
     auto setter = [callbacks, p](const folly::dynamic &value) {
       T v;
       auto ret = ini_on_update(value, v);

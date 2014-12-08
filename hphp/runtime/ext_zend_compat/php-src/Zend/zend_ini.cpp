@@ -72,7 +72,8 @@ public:
 static int hhvm_register_ini_entries_do_work(
   const zend_ini_entry *ini_entry,
   int module_number,
-  int acceptable_mode_mask
+  int acceptable_mode_mask,
+  int rrh_special
   TSRMLS_DC)
 {
   auto extension = HPHP::ZendExtension::GetByModuleNumber(module_number);
@@ -172,7 +173,8 @@ ZEND_API int zend_register_ini_entries_of_certain_mode(
   code = hhvm_register_ini_entries_do_work(
     ini_entry,
     module_number,
-    acceptable_mode_mask
+    acceptable_mode_mask,
+    rrh_special
     TSRMLS_CC);
   return code;
 }
