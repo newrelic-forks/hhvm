@@ -313,6 +313,7 @@ void EventHook::onFunctionPreExit(const ActRec* ar,
                                   const TypedValue* retval,
                                   const Fault* fault,
                                   ssize_t flags) {
+  assert(false);
   //
   // TODO: this comment stolen from EventHook::onFunctionExit
   // Do we even need to do this?
