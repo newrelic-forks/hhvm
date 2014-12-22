@@ -78,8 +78,20 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   endif()
 
   # No optimizations for debug builds.
-  set(CMAKE_C_FLAGS_DEBUG    "-Og -g")
-  set(CMAKE_CXX_FLAGS_DEBUG  "-Og -g")
+  # set(CMAKE_C_FLAGS_DEBUG    "-Og -g")
+  # set(CMAKE_CXX_FLAGS_DEBUG  "-Og -g")
+  # Consider using these flags from before 25Dec2014 -O0 -ggdb 
+  # set(CMAKE_C_FLAGS_DEBUG    "-Og")
+  # set(CMAKE_CXX_FLAGS_DEBUG  "-Og")
+    # initially using -fPIE -pie -static-libtsan gets to the part where it links hhvm, failed to link against libbfd.a
+    # build and install your own libbfd with flags to support -fPIC
+  # set(CMAKE_C_FLAGS_DEBUG    "-Og -DFOLLY_SANITIZE_ADDRESS=1  -fsanitize=thread  -fPIE -pie    -static-libtsan")
+  # set(CMAKE_CXX_FLAGS_DEBUG  "-Og -DFOLLY_SANITIZE_ADDRESS=1  -fsanitize=thread  -fPIE -pie    -static-libtsan")
+    set(CMAKE_C_FLAGS_DEBUG    "-Og -DFOLLY_SANITIZE_ADDRESS=1  -fsanitize=address               -static-libasan")
+    set(CMAKE_CXX_FLAGS_DEBUG  "-Og -DFOLLY_SANITIZE_ADDRESS=1  -fsanitize=address               -static-libasan")
+  # set(CMAKE_C_FLAGS_DEBUG    "-Og -DFOLLY_SANITIZE_ADDRESS=1  -fsanitize=address                              ")
+  # set(CMAKE_CXX_FLAGS_DEBUG  "-Og -DFOLLY_SANITIZE_ADDRESS=1  -fsanitize=address                              ")
+>>>>>>> 82391ad... Update recipies for asan and tsan.
 
   # Generic GCC flags and Optional flags
   set(CMAKE_C_FLAGS_MINSIZEREL       "-Os -DNDEBUG")
