@@ -93,3 +93,5 @@ CPackSourceConfig.cmake
 
 make.log
 www.pid
+
+hphp/runtime/ext_zend_compat/newrelic/
