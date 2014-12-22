@@ -90,3 +90,6 @@ CPackSourceConfig.cmake
 
 # python scripts
 *.pyc
+
+make.log
+www.pid
