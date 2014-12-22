@@ -290,20 +290,7 @@ void phpDebuggerExceptionHandlerHook() noexcept {
   }
 }
 
-// Hook called when the VM encounters any error.
-void phpDebuggerAnyErrorHook(const ExtendedException &ee,
-                          int errnum,
-                          const std::string& message) {
-  TRACE(5, "in phpDebuggeranyErrorHook()\n");
-  if (UNLIKELY(g_context->m_dbgNoBreak)) {
-    TRACE(5, "NoBreak flag is on\n");
-    return;
-  }
-  getHookHandler()->onAnyError(ee, errnum, message);
-  TRACE(5, "out phpDebuggerAnyErrorHook()\n");
-}
-
-// Hook called when the VM raises a thrown error.
+// Hook called when the VM raises an error.
 void phpDebuggerErrorHook(const ExtendedException &ee,
                           int errnum,
                           const std::string& message) {

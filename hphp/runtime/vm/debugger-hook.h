@@ -106,9 +106,6 @@ struct DebugHookHandler {
   // events.
   virtual void onExceptionThrown(ObjectData* exception) {}
   virtual void onExceptionHandle() {}
-  virtual void onAnyError(const ExtendedException &ee,
-                          int errnum,
-                          const std::string& message) {}
   virtual void onError(const ExtendedException &ee,
                        int errnum,
                        const std::string& message) {}
