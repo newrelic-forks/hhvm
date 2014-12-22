@@ -397,13 +397,6 @@ void Profiler::beginFrameEx(const char *symbol) {
 }
 
 /*
- * Called right after a function is finished, before gc'ing.
- */
-void Profiler::preendFrameEx(const TypedValue *retval,
-                             const char *_symbol) {
-}
-
-/*
  * Called right after a function is finished.
  */
 void Profiler::endFrameEx(const TypedValue *retval,
@@ -470,23 +463,6 @@ void Profiler::beginFrame(const char *symbol) {
 
   m_func_hash_counters[current->m_hash_code]++;
   beginFrameEx(symbol);
-}
-
-/**
- * End top of the stack before decref and/or free.
- */
-void Profiler::preendFrame(const TypedValue *retval,
-                           const char *symbol,
-                           bool endMain) {
-  if (m_stack) {
-    // special case for main() frame that's only ended by endAllFrames()
-    if (!endMain && m_stack->m_parent == nullptr) {
-      return;
-    }
-    preendFrameEx(retval, symbol);
-    // m_func_hash_counters[m_stack->m_hash_code]--;
-    // releaseFrame();
-  }
 }
 
 /**
@@ -1461,12 +1437,6 @@ Variant f_phprof_disable() {
 void begin_profiler_frame(Profiler *p,
                           const char *symbol) {
   p->beginFrame(symbol);
-}
-
-void pre_end_profiler_frame(Profiler *p,
-                            const TypedValue *retval,
-                            const char *symbol) {
-  p->preendFrame(retval, symbol);
 }
 
 void end_profiler_frame(Profiler *p,

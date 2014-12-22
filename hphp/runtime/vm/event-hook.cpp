@@ -48,9 +48,6 @@ const StaticString
 // implemented in runtime/ext/ext_hotprofiler.cpp
 extern void begin_profiler_frame(Profiler *p,
                                  const char *symbol);
-extern void pre_end_profiler_frame(Profiler *p,
-                                   const TypedValue *retval,
-                                   const char *symbol);
 extern void end_profiler_frame(Profiler *p,
                                const TypedValue *retval,
                                const char *symbol);
@@ -306,38 +303,6 @@ void EventHook::onFunctionEnter(const ActRec* ar, int funcType, ssize_t flags) {
   // Debugger hook
   if (flags & DebuggerHookFlag) {
     DEBUGGER_ATTACHED_ONLY(phpDebuggerFuncEntryHook(ar));
-  }
-}
-
-void EventHook::onFunctionPreExit(const ActRec* ar,
-                                  const TypedValue* retval,
-                                  const Fault* fault,
-                                  ssize_t flags) {
-  assert(false);
-  //
-  // TODO: this comment stolen from EventHook::onFunctionExit
-  // Do we even need to do this?
-  // When we are not running the JIT, this condition is always taken
-  //
-  // Inlined calls normally skip the function enter and exit events. If we
-  // side exit in an inlined callee, we short-circuit here in order to skip
-  // exit events that could unbalance the call stack.
-  //
-  if (RuntimeOption::EvalJit && ((jit::TCA) ar->m_savedRip == jit::mcg->tx().uniqueStubs.retInlHelper)) {
-    return;
-  }
-
-  if (flags & RequestInjectionData::EventHookFlag) {
-    Profiler* profiler = ThreadInfo::s_threadInfo->m_profiler;
-    if (profiler != nullptr) {
-      // NB: we don't have a function type flag to match what we got in
-      // onFunctionEnter. That's okay, though... we tolerate this in
-      // TraceProfiler.
-      pre_end_profiler_frame(profiler,
-                             retval,
-                             GetFunctionNameForProfiler(ar->func(),
-                                                        NormalFunc));
-    }
   }
 }
 
