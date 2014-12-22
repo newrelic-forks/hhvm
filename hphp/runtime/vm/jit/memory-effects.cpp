@@ -342,9 +342,6 @@ MemEffects memory_effects_impl(const IRInstruction& inst) {
     return may_reenter(inst,
                        may_load_store_kill(AUnknown, AHeapAny, AMIStateAny));
 
-  case HotProfilerFunctionReturnHook:  // rrh was here
-    return MayLoadStore { AUnknown, ANonFrame };  // rrh was here: major guess
-
   /*
    * If we're returning from a function, it's ReturnEffects.  The RetCtrl
    * opcode also suspends resumables, which we model as having any possible

@@ -312,10 +312,6 @@ static CallMap s_callMap {
                             {{SSA, 0}, {SSA, 1}}},
     {ReturnHook,  &EventHook::onFunctionReturn, DNone, SSync,
                             {{SSA, 0}, {TV, 1}}},
-    // rrh was here {
-    {HotProfilerFunctionReturnHook,  &EventHook::onHotProfilerFunctionReturnJit, DNone, SNone,  // TODO rrh replaced SSync with SNone
-                            {{SSA, 0}, {TV, 1}}},
-    // rrh was here }
 
     /* silence operator support */
     {ZeroErrorLevel, &zero_error_level, DSSA, SNone, {}},

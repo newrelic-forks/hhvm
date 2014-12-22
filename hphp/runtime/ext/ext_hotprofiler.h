@@ -153,11 +153,6 @@ public:
   /**
    * Called right after a function is finished.
    */
-  virtual void preendFrameEx(const TypedValue *retval, const char *symbol);
-
-  /**
-   * Called right after a function is finished.
-   */
   virtual void endFrameEx(const TypedValue *retval, const char *symbol);
 
   /**
@@ -173,11 +168,6 @@ public:
   /**
    * End top of the stack.
    */
-
-  virtual void preendFrame(const TypedValue *retval,
-                           const char *symbol,
-                           bool endMain = false) __attribute__ ((__noinline__)) ;
-
   virtual void endFrame(const TypedValue *retval,
                         const char *symbol,
                         bool endMain = false) __attribute__ ((__noinline__)) ;
