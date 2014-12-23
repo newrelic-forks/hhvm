@@ -895,7 +895,6 @@ static int start_server(const std::string &username, int xhprof) {
   pagein_self();
 
   set_execution_mode("server");
-
   HttpRequestHandler::GetAccessLog().init
     (RuntimeOption::AccessLogDefaultFormat, RuntimeOption::AccessLogs,
      username);
