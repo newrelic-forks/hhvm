@@ -530,6 +530,10 @@ function hhvm_cmd_impl() {
     hhvm_path(),
     '-c',
     $config,
+
+    '--config', '/home/rrh/git-work-2/php_agent/php_agent_hhvm/rrhdevel.ini',
+    '--config', '/home/rrh/git-work-2/php_agent/php_agent_hhvm/newrelic.ini',
+
     '-vEval.EnableArgsInBacktraces=true',
     '-vEval.EnableIntrinsicsExtension=true',
     mode_cmd($options),
@@ -616,6 +620,11 @@ function hphp_cmd($options, $test) {
     '--config',
     find_file($test, 'hphp_config.ini'),
     read_opts_file("$test.hphp_opts"),
+
+    '--config', '/home/rrh/git-work-2/php_agent/php_agent_hhvm/rrhdevel.ini',
+    '--config', '/home/rrh/git-work-2/php_agent/php_agent_hhvm/newrelic.ini',
+
+    read_file("$test.hphp_opts"),
     "-thhbc -l0 -k1 -o \"$test.repo\" \"$test\"",
   ));
 }
