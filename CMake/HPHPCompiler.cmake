@@ -93,8 +93,8 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   # Just plain old -ggdb gives us symbols, no optimization, and a
   # healthy gdb environment.  Compilation is slow, running is slow.
   #
-  # set(CMAKE_C_FLAGS_DEBUG    "-ggdb")
-  # set(CMAKE_CXX_FLAGS_DEBUG  "-ggdb")
+  # set(CMAKE_C_FLAGS_DEBUG    "-O0 -ggdb")
+  # set(CMAKE_CXX_FLAGS_DEBUG  "-O0 -ggdb")
 
     #
     # Use this for valgrind (note that the cpp symbol VALGRIND
