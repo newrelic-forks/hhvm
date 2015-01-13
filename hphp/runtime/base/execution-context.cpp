@@ -834,6 +834,17 @@ bool ExecutionContext::onFatalError(const Exception &e) {
 
 bool ExecutionContext::onUnhandledException(Object e) {
   String err = e.toString();
+
+  if (g_system_profiler) {
+    std::string msg = e.toString().data();
+    auto const ee = ExtendedException(msg);
+    //
+    // Follow what zend empirically does for uncaught exceptions.
+    //
+    int errnum = static_cast<int>(ErrorConstants::ErrorModes::ERROR);
+    g_system_profiler->errorCallBack(ee, errnum, msg);
+  }
+
   if (RuntimeOption::AlwaysLogUnhandledExceptions) {
     Logger::Error("\nFatal error: Uncaught %s", err.data());
   }
