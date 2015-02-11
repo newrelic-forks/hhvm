@@ -6,7 +6,10 @@
 #define HHVM_VERSION_MAJOR 3
 #define HHVM_VERSION_MINOR 8
 #define HHVM_VERSION_PATCH 0
-#define HHVM_VERSION_SUFFIX "-dev"
+#if !defined(HHVM_VERSION_SUFFIX)
+  // #define HHVM_VERSION_SUFFIX "-dev"
+  #define HHVM_VERSION_SUFFIX "-NewRelic"
+#endif
 
 /* HHVM_VERSION_ID minus the patch number
  * APIs should remain stable while this number is constant
