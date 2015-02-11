@@ -96,12 +96,12 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   # set(CMAKE_C_FLAGS_DEBUG    "-O0 -ggdb")
   # set(CMAKE_CXX_FLAGS_DEBUG  "-O0 -ggdb")
 
-    #
-    # Use this for valgrind (note that the cpp symbol VALGRIND
-    # gets defined when FOLLY_SANITIZE_ADDRESS is defined)
-    #
-    set(CMAKE_C_FLAGS_DEBUG    "-O0 -ggdb -DFOLLY_SANITIZE_ADDRESS=1")
-    set(CMAKE_CXX_FLAGS_DEBUG  "-O0 -ggdb -DFOLLY_SANITIZE_ADDRESS=1")
+  #
+  # Use this for valgrind (note that the cpp symbol VALGRIND
+  # gets defined when FOLLY_SANITIZE_ADDRESS is defined)
+  #
+  set(CMAKE_C_FLAGS_DEBUG    "-O0 -ggdb -DFOLLY_SANITIZE_ADDRESS=1")
+  set(CMAKE_CXX_FLAGS_DEBUG  "-O0 -ggdb -DFOLLY_SANITIZE_ADDRESS=1")
 
   #
   # set(CMAKE_C_FLAGS_DEBUG    "-O0 -ggdb -DFOLLY_SANITIZE_ADDRESS=1  -fsanitize=address -static-libasan")
