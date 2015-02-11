@@ -82,8 +82,20 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   # set(CMAKE_CXX_FLAGS_DEBUG  "-Og -g")
   # Consider using these flags from before 25Dec2014 -O0 -ggdb 
 
-  set(CMAKE_C_FLAGS_DEBUG    "-O0 -ggdb")
-  set(CMAKE_CXX_FLAGS_DEBUG  "-O0 -ggdb")
+  #
+  # Even when compiling -Og, gdb reports some values were optimized away
+  # Even when compiling -O0, gdb reports some values were optimized away
+  #
+  # set(CMAKE_C_FLAGS_DEBUG    "-Og -ggdb")
+  # set(CMAKE_CXX_FLAGS_DEBUG  "-Og -ggdb")
+
+  #
+  # Just plain old -ggdb gives us symbols, no optimization, and a
+  # healthy gdb environment.  Compilation is slow, running is slow.
+  #
+  set(CMAKE_C_FLAGS_DEBUG    "-ggdb")
+  set(CMAKE_CXX_FLAGS_DEBUG  "-ggdb")
+
   #
   # set(CMAKE_C_FLAGS_DEBUG    "-O0 -ggdb -DFOLLY_SANITIZE_ADDRESS=1  -fsanitize=address -static-libasan")
   # set(CMAKE_CXX_FLAGS_DEBUG  "-O0 -ggdb -DFOLLY_SANITIZE_ADDRESS=1  -fsanitize=address -static-libasan")
