@@ -172,6 +172,12 @@ public:
 
   virtual bool shouldSkipBuiltins() const { return false; }
 
+  virtual void beginCallUserFunc(const char *class_name,
+                                 const char *method_name) const { return; }
+
+  virtual void endCallUserFunc(const char *class_name,
+                               const char *method_name) const { return; }
+
   template<class phpret, class Name, class Counts>
   static void returnVals(phpret& ret, const Name& name, const Counts& counts,
                   int flags, int64_t MHz);

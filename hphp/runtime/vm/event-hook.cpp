@@ -518,4 +518,16 @@ void EventHook::onFunctionUnwind(ActRec* ar, const Fault& fault) {
   onFunctionExit(ar, nullptr, &fault, flags);
 }
 
+void EventHook::onFunctionCallUserFuncArray(const ActRec* invoke_ar,
+                                            const Func *func) {
+  if (invoke_ar != nullptr) {
+    Profiler* profiler = ThreadInfo::s_threadInfo->m_profiler;
+    if (profiler != nullptr) {
+      const char *callee_full_name = EventHook::GetFunctionNameForProfiler(
+        func, EventHook::NormalFunc);
+      profiler->beginCallUserFunc(callee_full_name, 0);
+    }
+  }
+}
+
 } // namespace HPHP

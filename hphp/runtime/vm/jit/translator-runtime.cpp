@@ -23,8 +23,10 @@
 #include "hphp/runtime/base/zend-functions.h"
 #include "hphp/runtime/ext/ext_closure.h"
 #include "hphp/runtime/ext/ext_collections.h"
+#include "hphp/runtime/ext/ext_hotprofiler.h"
 #include "hphp/runtime/ext/hh/ext_hh.h"
 #include "hphp/runtime/ext/std/ext_std_function.h"
+#include "hphp/runtime/vm/event-hook.h"
 #include "hphp/runtime/vm/jit/mc-generator-internal.h"
 #include "hphp/runtime/vm/jit/mc-generator.h"
 #include "hphp/runtime/vm/jit/translator-inline.h"
@@ -860,6 +862,12 @@ void loadFuncContextImpl(FooNR callableNR, ActRec* preLiveAR, ActRec* fp) {
     invName,
     FailBehavior == OnFail::Warn
   );
+
+  Profiler* profiler = ThreadInfo::s_threadInfo->m_profiler;
+  if (UNLIKELY(profiler != nullptr)) {
+    EventHook::FunctionCallUserFuncArray(fp, func);
+  }
+
   if (UNLIKELY(func == nullptr)) {
     if (FailBehavior == OnFail::Fatal) {
       raise_error("Invalid callable (array)");
@@ -907,6 +915,11 @@ static bool strHasColon(StringData* sd) {
 
 void fpushCufHelperArray(ArrayData* arr, ActRec* preLiveAR, ActRec* fp) {
   try {
+    Profiler* profiler = ThreadInfo::s_threadInfo->m_profiler;
+    if (UNLIKELY(profiler != nullptr)) {
+      return fpushCufHelperArraySlowPath(arr, preLiveAR, fp);
+    }
+
     if (UNLIKELY(!arr->isPacked() || arr->getSize() != 2)) {
       return fpushCufHelperArraySlowPath(arr, preLiveAR, fp);
     }
@@ -962,6 +975,11 @@ static void fpushStringFail(const StringData* sd, ActRec* preLiveAR) {
 
 void fpushCufHelperString(StringData* sd, ActRec* preLiveAR, ActRec* fp) {
   try {
+    Profiler* profiler = ThreadInfo::s_threadInfo->m_profiler;
+    if (UNLIKELY(profiler != nullptr)) {
+      return fpushCufHelperStringSlowPath(sd, preLiveAR, fp);
+    }
+
     if (UNLIKELY(strHasColon(sd))) {
       return fpushCufHelperStringSlowPath(sd, preLiveAR, fp);
     }

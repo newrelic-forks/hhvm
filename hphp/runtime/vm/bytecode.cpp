@@ -6118,6 +6118,8 @@ OPTBLD_INLINE void doFPushCuf(PC& pc, bool forward, bool safe) {
                                      forward,
                                      obj, cls, invName,
                                      !safe);
+  
+  EventHook::FunctionCallUserFuncArray(vmfp(), f);
 
   if (safe) vmStack().topTV()[1] = vmStack().topTV()[0];
   vmStack().ndiscard(1);

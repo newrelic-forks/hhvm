@@ -102,6 +102,10 @@ class EventHook {
     ringbufferExit(ar);
     if (UNLIKELY(checkSurpriseFlags())) { onFunctionUnwind(ar, fault); }
   }
+  static inline void FunctionCallUserFuncArray(const ActRec* invoke_ar,
+                                               const Func *func) {
+    onFunctionCallUserFuncArray(invoke_ar, func);
+  }
 
   /**
    * Event hooks -- JIT entry points.
@@ -117,6 +121,12 @@ class EventHook {
 #endif
     onFunctionReturn(ar, retval);
   }
+
+  /**
+   * Event hooks -- entry from code called by JIT
+   */
+ static void onFunctionCallUserFuncArray(const ActRec *invoke_ar,
+                                         const Func *func);
 
 private:
   enum {
