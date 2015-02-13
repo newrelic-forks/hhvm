@@ -470,13 +470,6 @@ void EventHook::onFunctionSuspendE(ActRec* suspending,
   }
 }
 
-void EventHook::onFunctionPreReturn(ActRec *ar, TypedValue &retval) {
-  ssize_t flags;
-  // flags = CheckSurprise();  // This has side effects in that it clears flags
-  flags = RequestInjectionData::EventHookFlag;
-  onFunctionPreExit(ar, &retval, nullptr, flags);
-}
-
 void EventHook::onFunctionReturn(ActRec* ar, TypedValue retval) {
   // The locals are already gone. Null out everything.
   ar->setThisOrClassAllowNull(nullptr);
