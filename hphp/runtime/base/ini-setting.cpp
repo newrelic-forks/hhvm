@@ -829,7 +829,6 @@ void IniSetting::Bind(
   std::function<class UserIniData *(void)> userDataCallback
 ) {
   assert(!name.empty());
-  IniCallbackData *data = 0;
 
   /*
    * WATCH OUT: unlike php5, a Mode is not necessarily a bit mask.
