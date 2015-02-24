@@ -526,13 +526,19 @@ function hhvm_cmd_impl() {
   $options = array_shift($args);
   $config = array_shift($args);
   $extra_args = $args;
+  if (getenv('NR_INI_DIR')) {
+    $nr_dir = getenv('NR_INI_DIR') . '/';
+  } else {
+    $nr_dir = '/home/rrh/git-work-2/php_agent/php_agent_hhvm/';
+  }
   $args = array(
     hhvm_path(),
     '-c',
     $config,
 
-    '--config', '/home/rrh/git-work-2/php_agent/php_agent_hhvm/rrhdevel.ini',
-    '--config', '/home/rrh/git-work-2/php_agent/php_agent_hhvm/newrelic.ini',
+    '--config', $nr_dir . 'newrelic-hhvm.ini',
+    '--config', $nr_dir . 'newrelic-devel.ini',
+    '--config', $nr_dir . 'newrelic.ini',
 
     '-vEval.EnableArgsInBacktraces=true',
     '-vEval.EnableIntrinsicsExtension=true',
