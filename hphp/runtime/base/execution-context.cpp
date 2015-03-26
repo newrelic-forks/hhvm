@@ -841,7 +841,7 @@ bool ExecutionContext::onUnhandledException(Object e) {
     //
     // Follow what zend empirically does for uncaught exceptions.
     //
-    int errnum = static_cast<int>(ErrorConstants::ErrorModes::ERROR);
+    int errnum = static_cast<int>(ErrorMode::ERROR);
     g_system_profiler->errorCallBack(ee, errnum, msg);
   }
 
