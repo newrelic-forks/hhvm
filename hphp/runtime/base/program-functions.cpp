@@ -40,6 +40,7 @@
 #include "hphp/runtime/base/type-conversions.h"
 #include "hphp/runtime/base/types.h"
 #include "hphp/runtime/base/unit-cache.h"
+#include "hphp/runtime/base/thread-safe-setlocale.h"
 #include "hphp/runtime/debugger/debugger.h"
 #include "hphp/runtime/debugger/debugger_client.h"
 #include "hphp/runtime/debugger/debugger_hook_handler.h"
