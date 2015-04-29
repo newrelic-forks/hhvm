@@ -513,6 +513,11 @@ void EventHook::onFunctionUnwind(ActRec* ar, const Fault& fault) {
 
 void EventHook::onFunctionCallUserFuncArray(const ActRec* invoke_ar,
                                             const Func *func) {
+#if 0
+  /*
+   * GetFunctionNameForProfiler fails on test/quick/cuf07.php
+   * when the profiler is running.
+   */
   if (invoke_ar != nullptr) {
     Profiler* profiler = ThreadInfo::s_threadInfo->m_profiler;
     if (profiler != nullptr) {
@@ -521,6 +526,7 @@ void EventHook::onFunctionCallUserFuncArray(const ActRec* invoke_ar,
       profiler->beginCallUserFunc(callee_full_name, 0);
     }
   }
+#endif
 }
 
 } // namespace HPHP
