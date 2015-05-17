@@ -539,6 +539,7 @@ function hhvm_cmd_impl() {
     '--config', $nr_dir . 'newrelic-hhvm.ini',
     '--config', $nr_dir . 'newrelic-devel.ini',
     '--config', $nr_dir . 'newrelic.ini',
+    '--xhprof-flags=1024',  // external profiler, uses New Relic
 
     '-vEval.EnableArgsInBacktraces=true',
     '-vEval.EnableIntrinsicsExtension=true',
@@ -627,8 +628,13 @@ function hphp_cmd($options, $test) {
     find_file($test, 'hphp_config.ini'),
     read_opts_file("$test.hphp_opts"),
 
-    '--config', '/home/rrh/git-work-2/php_agent/php_agent_hhvm/rrhdevel.ini',
-    '--config', '/home/rrh/git-work-2/php_agent/php_agent_hhvm/newrelic.ini',
+    '--config',
+      '/home/rrh/git-work-2/php_agent/php_agent_hhvm/newrelic-hhvm.ini',
+    '--config',
+      '/home/rrh/git-work-2/php_agent/php_agent_hhvm/newrelic-devel.ini',
+    '--config',
+      '/home/rrh/git-work-2/php_agent/php_agent_hhvm/newrelic.ini',
+    '--xhprof-flags=1024',  // external profiler, uses New Relic
 
     read_file("$test.hphp_opts"),
     "-thhbc -l0 -k1 -o \"$test.repo\" \"$test\"",
