@@ -61,7 +61,9 @@ ProxyArray::asProxyArray(const ArrayData* ad) {
 }
 
 ArrayData* ProxyArray::innerArr(const ArrayData* ad) {
-  return asProxyArray(ad)->m_ref->tv()->m_data.parr;
+  ArrayData *return_val = asProxyArray(ad)->m_ref->tv()->m_data.parr;
+  assert (return_val != ad);
+  return return_val;
 }
 
 ProxyArray* ProxyArray::Make(ArrayData* ad) {
