@@ -93,12 +93,37 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   # Just plain old -ggdb gives us symbols, no optimization, and a
   # healthy gdb environment.  Compilation is slow, running is slow.
   #
-  set(CMAKE_C_FLAGS_DEBUG    "-ggdb")
-  set(CMAKE_CXX_FLAGS_DEBUG  "-ggdb")
+  # set(CMAKE_C_FLAGS_DEBUG    "-ggdb")
+  # set(CMAKE_CXX_FLAGS_DEBUG  "-ggdb")
+
+    #
+    # Use this for valgrind (note that the cpp symbol VALGRIND
+    # gets defined when FOLLY_SANITIZE_ADDRESS is defined)
+    #
+    set(CMAKE_C_FLAGS_DEBUG    "-O0 -ggdb -DFOLLY_SANITIZE_ADDRESS=1")
+    set(CMAKE_CXX_FLAGS_DEBUG  "-O0 -ggdb -DFOLLY_SANITIZE_ADDRESS=1")
 
   #
   # set(CMAKE_C_FLAGS_DEBUG    "-O0 -ggdb -DFOLLY_SANITIZE_ADDRESS=1  -fsanitize=address -static-libasan")
   # set(CMAKE_CXX_FLAGS_DEBUG  "-O0 -ggdb -DFOLLY_SANITIZE_ADDRESS=1  -fsanitize=address -static-libasan")
+
+  #
+  # Various attempts on Ubuntu 14.04 to get tsan to work failed.
+  # It may be a function of how ubuntu libraries are built;
+  # how HHVM libraries are built, or ...
+  #
+  # Didn't link: rrh, 04May2015 (04May2015)
+  # set(CMAKE_C_FLAGS_DEBUG    "-O0 -ggdb -DFOLLY_SANITIZE_ADDRESS=1  -fsanitize=thread  -fPIE -pie    -static-libtsan")
+  # set(CMAKE_CXX_FLAGS_DEBUG  "-O0 -ggdb -DFOLLY_SANITIZE_ADDRESS=1  -fsanitize=thread  -fPIE -pie    -static-libtsan")
+
+  # fails to link; asks for -pie or -shared (04May2015)
+  # set(CMAKE_C_FLAGS_DEBUG    "-O0 -ggdb -DFOLLY_SANITIZE_ADDRESS=1  -fsanitize=thread  -fPIC         -static-libtsan")
+  # set(CMAKE_CXX_FLAGS_DEBUG  "-O0 -ggdb -DFOLLY_SANITIZE_ADDRESS=1  -fsanitize=thread  -fPIC         -static-libtsan")
+
+  # Fails to link some libraries into test programs early in build process
+  # set(CMAKE_C_FLAGS_DEBUG    "-O0 -ggdb -DFOLLY_SANITIZE_ADDRESS=1  -fsanitize=thread  -pie         -static-libtsan")
+  # set(CMAKE_CXX_FLAGS_DEBUG  "-O0 -ggdb -DFOLLY_SANITIZE_ADDRESS=1  -fsanitize=thread  -pie         -static-libtsan")
+
 
   # Generic GCC flags and Optional flags
   set(CMAKE_C_FLAGS_MINSIZEREL       "-Os -DNDEBUG")
