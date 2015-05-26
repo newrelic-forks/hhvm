@@ -124,6 +124,10 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   # set(CMAKE_C_FLAGS_DEBUG    "-O0 -ggdb -DFOLLY_SANITIZE_ADDRESS=1  -fsanitize=thread  -pie         -static-libtsan")
   # set(CMAKE_CXX_FLAGS_DEBUG  "-O0 -ggdb -DFOLLY_SANITIZE_ADDRESS=1  -fsanitize=thread  -pie         -static-libtsan")
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> cd579ef... Build for valgrind (FOLLY_SANITIZE_ADRESS).
   # Generic GCC flags and Optional flags
   set(CMAKE_C_FLAGS_MINSIZEREL       "-Os -DNDEBUG")
   set(CMAKE_CXX_FLAGS_MINSIZEREL     "-Os -DNDEBUG")
