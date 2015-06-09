@@ -153,11 +153,11 @@ add_definitions(${LIBXSLT_DEFINITIONS})
 find_package(EXPAT REQUIRED)
 include_directories(${EXPAT_INCLUDE_DIRS})
 
-### # libsqlite3
-### find_package(LibSQLite)
-### if (LIBSQLITE_INCLUDE_DIR)
-###   include_directories(${LIBSQLITE_INCLUDE_DIR})
-### endif ()
+# libsqlite3
+find_package(LibSQLite)
+if (LIBSQLITE_INCLUDE_DIR)
+  include_directories(${LIBSQLITE_INCLUDE_DIR})
+endif ()
 
 # libdouble-conversion
 find_package(DoubleConversion)
@@ -568,7 +568,6 @@ macro(hphp_link target)
   endif()
 
   target_link_libraries(${target} timelib)
-  target_link_libraries(${target} sqlite3)
   target_link_libraries(${target} folly)
 
   if (ENABLE_MCROUTER)
